@@ -1,0 +1,22 @@
+{
+  "name": "hmpo-example-components",
+  "version": "1.0.0",
+  "description": "Example components for use with the passports-form-controller",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UKHomeOffice/passports-example-components.git"
+  },
+  "author": "HMPO",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UKHomeOffice/passports-example-components/issues"
+  },
+  "homepage": "https://github.com/UKHomeOffice/passports-example-components#readme",
+  "devDependencies": {
+    "eslint": "^3.7.1"
+  }
+}
