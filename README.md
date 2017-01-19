@@ -8,6 +8,16 @@ Example usage:
 const dates = require('passports-example-components').dates;
 const birds = require('passports-example-components').birds;
 
+const steps = {
+    '/seabirds': {
+        fields: ['name-seabird', 'name-big-one'],
+        next: '/date'
+    },
+    '/date': {
+        fields: ['day', 'month', 'year']
+    }
+};
+
 const fields = {
     // use validation component
     'name-seabird': {
