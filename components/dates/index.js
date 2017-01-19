@@ -18,7 +18,7 @@ const month = {
 
 const day = {
     legend: {
-        value: 'Day',
+        value: 'Day'
     },
     labelClassName: 'form-label-dates-component',
     controller: {
@@ -29,4 +29,12 @@ const day = {
     validate: validators.day
 };
 
-module.exports = { month, day };
+const year = {
+    legend: {
+        value: 'Year'
+    },
+    labelClassName: 'form-label-dates-component',
+    validate: [ 'required' ]
+}
+
+module.exports = { month, day, year };
