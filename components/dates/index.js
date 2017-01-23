@@ -1,40 +1,30 @@
 'use strict';
 
-// Example field component
+const Component = require('hmpo-form-component');
+const fields = require('./fields');
+const dateController = require('./controller');
+const debug = require('debug')('hmpo:date-component');
 
-const validators = require('./validators');
-const controllers = require('./controller');
-const formatters = require('./formatters');
+class Dates extends Component {
 
-const month = {
-    legend: {
-        value: 'Month',
-        className: 'form-label-bold'
-    },
-    labelClassName: 'form-label-dates-component',
-    validate: validators.month,
-    formatter: formatters.toUpper
-};
+    controller(settings) {
+        // allow implementations to supply their own parent - in this way, multiple components controllers could be used on a single step
+        settings.base = settings.base || this.baseController();
+        return dateController(settings);
+    }
 
-const day = {
-    legend: {
-        value: 'Day'
-    },
-    labelClassName: 'form-label-dates-component',
-    controller: {
-        get: [ controllers.customMethod, controllers.anotherMethod ],
-        post: [ controllers.customMethod ],
-        getValues: controllers.getValues
-    },
-    validate: validators.day
-};
+    day(settings) {
+        return this.field(settings, fields.day);
+    }
 
-const year = {
-    legend: {
-        value: 'Year'
-    },
-    labelClassName: 'form-label-dates-component',
-    validate: [ 'required' ]
+    month(settings) {
+        return this.field(settings, fields.month);
+    }
+
+    year(settings) {
+        return this.fields(settings, fields.year);
+    }
+
 }
 
-module.exports = { month, day, year };
+module.exports = Dates;

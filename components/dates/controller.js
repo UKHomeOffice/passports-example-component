@@ -2,25 +2,24 @@
 
 const debug = require('debug')('hmpo:components');
 
-const controller = {
+module.exports = function (settings) {
 
-    customMethod: function customMethod (req, res, key, callback) {
-        debug('Custom method called for field %s on %s request', key, req.method);
-        callback();
-    },
+    // field keys can be passed in through settings.fields
+    let fields = settings.fields || {};
 
-    anotherMethod: function anotherMethod (req, res, key, callback) {
-        debug('Another method called for field %s on %s request', key, req.method);
-        callback();
-    },
+    // return form controller
+    return class Dates extends settings.base {
+        constructor(options) {
+            super(options);
+        }
 
-    getValues: function getValues (req, res, values, key, callback) {
-        debug('GetValues called for field %s', key);
-        values = values || {};
-        values[key] = 'Value set by getValues';
-        callback(values);
-    }
+        getValues(req, res, callback) {
+            super.getValues(req, res, (err, values) => {
+                debug('GetValues called, settings', settings);
+                values[fields.d] = 'Day value set by getValues';
+                callback(null, values);
+            });
+        }
+    };
 
 };
-
-module.exports = controller;

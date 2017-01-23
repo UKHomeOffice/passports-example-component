@@ -1,12 +1,13 @@
 # passports-example-components
-Example components to demo a prototype for handling components in passports forms. See https://github.com/UKHomeOffice/passports-form-controller/commit/2096d03c878aaff8d972d63c5b16042f9bac6dae.
+Example components for use with passports forms.
 
-See /components. There are 2 examples: dates and birds.
+See /components which contains 2 examples: dates and birds. 'Components' are reusable form elements, such as fields or form controllers. They can be created using the base component - https://github.com/UKHomeOffice/passports-form-component.
 
 Example usage:
 ```
-const dates = require('passports-example-components').dates;
-const birds = require('passports-example-components').birds;
+const components = require('hmpo-example-components');
+const date = new components.dates;
+const birds = new components.birds;
 
 const steps = {
     '/seabirds': {
@@ -14,47 +15,24 @@ const steps = {
         next: '/date'
     },
     '/date': {
-        fields: ['day', 'month', 'year']
+        fields: ['day', 'month', 'year'],
+        // use the controller supplied by the date component
+        controller: date.controller({
+            fields: { d: 'day', m: 'month', y: 'year' }
+        })
     }
 };
 
 const fields = {
-    // use validation component
-    'name-seabird': {
-        legend: {
-            value: 'Name a type of sea bird',
-            className: 'form-label-bold'
-        },
-        validate: [ birds.sea.any ]
-    },
-    // specify validation method from component, and add custom validation
-    'name-big-one': {
-        legend: {
-            value: 'Name a really big sea bird',
-            className: 'form-label-bold'
-        },
-        validate: [ 'required', birds.sea.large ]
-    }
-    // use field component but specify additional elements
-    'day': {
-        components: [ dates.day ], // could use an array of components
-        validate: [ 'required' ],
-        controller: {
-            getErrors: function bigSeabirdCheck (req, res, errors) {
-                errors = errors || {};
-                if (req.sessionModel.get('name-big-one') == 'pelican') {
-                    errors.pelican = 'Actually, an albatross is bigger';
-                }
-                return errors;
-            }
-        }
-    },
-    // use field component
-    'month': {
-        components: dates.month
-    },
-    'year': {
-        components: dates.year
-    }
+    'name-seabird': birds.seabird(), // just use the component defaults
+    'name-big-one': birds.bigSeabird(),
+    'day': date.day({
+        validate: ['numeric'] // extend 'day' default validators
+    }),
+    'month': date.month({
+        formatter: 'removehyphens',
+        overrides: ['legend'] // turn off default 'month' legend, rather than extending
+    }),
+    'year': date.year(), // no overrides or extensions
 };
 ```
